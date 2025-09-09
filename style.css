@@ -1,0 +1,233 @@
+/* ====== Tema Musicala (compacto y legible) ====== */
+:root{
+  --brand-1:#6c3bff;  /* morado */
+  --brand-2:#ff4fb0;  /* magenta */
+  --ink:#151518;
+  --muted:#6b7280;
+  --bg:#f7f7fb;
+  --card:#ffffff;
+  --border:#e6e6ef;
+  --ring: rgba(108,59,255,.12);
+
+  --radius:14px;
+  --radius-lg:18px;
+
+  /* tipografía compacta */
+  --fs-11:11.5px;
+  --fs-12:12.5px;
+  --fs-13:13.5px;
+  --fs-14:14.5px;
+  --fs-16:16px;
+  --fs-18:18px;
+
+  --w-col-tarea: 460px;
+  --w-col-texto-largo: 560px;
+  --container: 1100px;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color:var(--ink); background:var(--bg);
+  font-size:var(--fs-14); -webkit-font-smoothing:antialiased;
+  text-align:center; /* Centrado general */
+}
+
+.visually-hidden{
+  position:absolute!important; left:-9999px!important; width:1px;height:1px; overflow:hidden;
+}
+
+/* ====== Header ====== */
+.site-header{
+  position:relative;
+  padding:18px 12px 52px;
+  background: linear-gradient(115deg, var(--brand-1), var(--brand-2));
+  color:#fff; overflow:hidden;
+  text-align:center;
+}
+.site-header::after{
+  content:""; position:absolute; inset:auto -10% 0 -10%; height:72px;
+  background:#fff; border-radius:20px 20px 0 0;
+}
+.head-inner{ position:relative; z-index:1; max-width:var(--container); margin:0 auto; }
+.logo{ height:42px; width:auto; display:block; margin:0 auto 6px; }
+.title-wrap h1{
+  margin:0; font-size:var(--fs-18); font-weight:800; line-height:1.2;
+}
+.title-wrap p{ margin:4px 0 0; opacity:.9; font-size:var(--fs-12) }
+
+/* ====== Card ====== */
+.card{
+  position:relative; z-index:2; max-width:var(--container); margin:-34px auto 18px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:20px; box-shadow:0 14px 38px rgba(17,17,26,.10);
+  overflow:hidden; text-align:left;
+}
+.card-head{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:10px 12px; border-bottom:1px solid var(--border);
+  background: linear-gradient(180deg,#fff, #fafafe);
+  gap:10px; position:sticky; top:0; z-index:6;
+}
+.status{ color:var(--muted); font-size:var(--fs-12); }
+.status.err{ color:#c21d4e; }
+
+.btn{
+  border:1px solid var(--border);
+  background:#fff;
+  padding:8px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:var(--fs-13);
+  transition:.15s transform,.15s box-shadow,.15s border-color,.15s background;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.btn:hover{ transform:translateY(-1px); box-shadow:0 6px 14px var(--ring); }
+.btn:active{ transform:translateY(0); }
+.btn:focus{ outline:none; box-shadow:0 0 0 4px var(--ring); }
+
+/* Contadores */
+#badgePend,#badgeCurso,#badgeComp{
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:800; font-size:var(--fs-12);
+  background:#fff; border:1px solid var(--border);
+  box-shadow:0 2px 6px rgba(17,17,26,.06);
+}
+
+/* Chips */
+.chips{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+.chip{
+  border:1px solid var(--border); background:#fff; padding:6px 10px; border-radius:999px;
+  font-weight:700; font-size:var(--fs-12); cursor:pointer;
+}
+.chip.active{ background:#efe9ff; border-color:#d8cdfc; }
+
+/* ====== Tabla ====== */
+.table-wrap{
+  width:100%; overflow:auto; border-top:1px solid var(--border);
+}
+
+table{
+  width:100%; border-collapse:separate; border-spacing:0; min-width:920px;
+  font-size:var(--fs-13); line-height:1.35;
+  text-align:left;
+}
+thead th{
+  position:sticky; top:0; z-index:3;
+  background:linear-gradient(180deg,#fff,#f7f7fb);
+  border-bottom:1px solid var(--border);
+  color:#3b3b42; font-weight:800; letter-spacing:.01em;
+  padding:8px 10px; font-size:var(--fs-12);
+}
+tbody td{
+  padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top;
+  color:#2b2b31;
+}
+tbody tr:nth-child(odd){ background:#fff; }
+tbody tr:nth-child(even){ background:#fafafe; }
+tbody tr:hover td{ background:#f3f3ff; }
+
+td[data-th="Documento y Herramientas"] a{
+  color:var(--brand-1); font-weight:600; text-decoration:none;
+}
+td[data-th="Documento y Herramientas"] a:hover{
+  text-decoration:underline;
+}
+
+.wrap{ white-space:normal; word-break:break-word; }
+td[data-th="Tarea"]{ max-width:var(--w-col-tarea); }
+td[data-th="¿Qué se avanzó?"],
+td[data-th="¿Qué falta?"],
+td[data-th="¿Qué se debe mejorar?"],
+td[data-th="Observaciones"],
+td[data-th="Documento y Herramientas"],
+td[data-th="Objetivo"]{
+  max-width:var(--w-col-texto-largo);
+}
+
+/* Sticky cols */
+#tbl th:first-child, #tbl td:first-child{
+  position:sticky; left:0; z-index:4; background:#fff;
+  box-shadow:1px 0 0 var(--border);
+  min-width:92px; text-align:center;
+}
+#tbl th:last-child, #tbl td:last-child{
+  position:sticky; right:0; z-index:4;
+  background:#fff; box-shadow:-1px 0 0 var(--border);
+  text-align:center;
+}
+.btn.btn-detail{ padding:7px 12px; font-size:var(--fs-12); }
+
+/* ===== Responsive ===== */
+@media (max-width:760px){
+  thead{ display:none; }
+  tbody{ display:grid; gap:10px; padding:10px; }
+  tbody tr{
+    display:grid; gap:8px; padding:12px; background:#fff;
+    border:1px solid var(--border); border-radius:14px;
+    box-shadow:0 4px 10px rgba(17,17,26,.05);
+  }
+  tbody td{ display:flex; gap:8px; border:none; padding:2px 0; }
+  tbody td::before{
+    content: attr(data-th) ":"; min-width:42%; color:var(--muted);
+    font-weight:700; font-size:var(--fs-12);
+  }
+  #tbl th:first-child, #tbl td:first-child,
+  #tbl th:last-child,  #tbl td:last-child{ position:static; box-shadow:none; }
+  #tbl td:last-child{ text-align:left; }
+  .btn.btn-detail{ width:100%; justify-content:center; }
+}
+
+/* ===== Modal ===== */
+.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:50; }
+.modal.show{ display:flex; }
+.modal__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.33); }
+.modal__dialog{
+  position:relative; z-index:1; width:min(920px, 92vw); max-height:90vh; overflow:auto;
+  background:#fff; border:1px solid var(--border); border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.22);
+}
+.modal__header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px; border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,#fff,#fafafe);
+  position:sticky; top:0; z-index:1;
+}
+.modal__content{ padding:12px; text-align:left; }
+.modal__meta{ display:flex; gap:14px; flex-wrap:wrap; color:var(--muted); font-size:var(--fs-12); }
+
+/* Formularios */
+.form-grid{ display:grid; grid-template-columns: repeat(3, minmax(180px,1fr)); gap:10px; }
+.form-grid label{ display:flex; flex-direction:column; gap:6px; font-size:var(--fs-13); }
+.form-grid label > span{ font-weight:700; color:#35353b; }
+.form-grid label.full{ grid-column:1/-1; }
+.form-grid input, .form-grid textarea, .form-grid select{
+  border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:#fff;
+}
+.form-grid textarea{ resize:vertical; min-height:84px; }
+.form-actions{ display:flex; align-items:center; gap:8px; margin-top:6px; }
+@media (max-width:760px){ .form-grid{ grid-template-columns:1fr; } }
+
+.badge{ display:inline-block; padding:3px 8px; border-radius:999px;
+  border:1px solid var(--border); background:#fff; font-size:var(--fs-11); font-weight:800; }
+
+/* Estados por fecha */
+tr.is-overdue td{ background:#fff3f5 !important; }
+tr.is-today   td{ background:#fffef3 !important; }
+tr.is-soon    td{ background:#f5fff6 !important; }
+
+/* Urgencia */
+.badge-urg{ display:inline-block; padding:2px 8px; border-radius:999px;
+  border:1px solid var(--border); background:#fff; font-size:var(--fs-11); font-weight:800; }
+.badge-urg.alta   { background:#ffe8ee; border-color:#ffc5d3; }
+.badge-urg.media  { background:#fff7e6; border-color:#ffe1b0; }
+.badge-urg.baja   { background:#eef9e8; border-color:#cfeec1; }
+
+/* Sin resultados */
+#tbl tr.no-results td{
+  text-align:center; color:var(--muted); font-style:italic; padding:22px 10px;
+}

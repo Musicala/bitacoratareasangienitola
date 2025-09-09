@@ -1,0 +1,11 @@
+{
+  "api": {
+    "baseUrl": "https://script.google.com/macros/s/AKfycbzcKiR41316RubjbIDcGOte1gDI4WNAV9ucReO2oVLlqU77n9njABgkPlTW4uLQAXOFDw/exec",
+    "paramName": "consulta"
+  },
+  "dataset": "tareas",
+  "branding": {
+    "title": "Bitácora de tareas académicas — Angie Nitola",
+    "subtitle": "Hoja “Tareas académicas” · Registros en “Bitácora tareas”"
+  }
+}

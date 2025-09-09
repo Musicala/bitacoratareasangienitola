@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bitácora de tareas académicas — Angie Nitola</title>
+
+  <meta name="description" content="Vista de tareas académicas con filtros y registro de bitácora para Santiago Gutiérrez." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Encabezado (centrado) -->
+  <header class="site-header" role="banner">
+    <div class="head-inner" style="flex-direction:column; align-items:center; text-align:center;">
+      <img src="logo.jpg" alt="Musicala" class="logo" id="site-logo" />
+      <div class="title-wrap" style="max-width:920px;">
+        <h1 id="site-title" style="margin-top:6px;">Bitácora de tareas académicas — Angie Nitola</h1>
+        <p id="site-subtitle">Hoja “Tareas académicas” · Registros en “Bitácora tareas”</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tarjeta principal -->
+  <section class="card" aria-labelledby="tabla-title">
+    <div class="card-head">
+      <!-- Barra de herramientas -->
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; width:100%; justify-content:center;">
+        <button id="btnReload" class="btn" type="button" title="Volver a cargar desde la hoja">↻ Recargar</button>
+
+        <!-- Filtros: si una columna no existe, el script no cargará opciones -->
+        <select id="fPersona" class="btn" title="Filtrar por responsable">
+          <option value="">Responsable: todos</option>
+        </select>
+
+        <select id="fEstado" class="btn" title="Filtrar por estado de la tarea">
+          <option value="">Estado: todos</option>
+        </select>
+
+        <select id="fUrgencia" class="btn" title="Filtrar por nivel de urgencia">
+          <option value="">Urgencia: todas</option>
+        </select>
+
+        <input
+          id="q"
+          class="btn"
+          style="min-width:260px"
+          type="search"
+          placeholder="Buscar por ID, tarea, fechas o cualquier columna…"
+          aria-label="Buscar en la tabla de tareas"
+        />
+
+        <!-- Botones UX -->
+        <button id="btnClear" class="btn btn-ghost" type="button" title="Limpiar filtros">⟲ Limpiar</button>
+        <!-- (Se quita el botón de Densidad como pediste) -->
+      </div>
+
+      <!-- Chips rápidos por estado -->
+      <div class="chips" aria-label="Filtros rápidos por estado" style="justify-content:center;">
+        <button class="chip" data-chip="pend" type="button" title="Ver solo pendientes">Pendientes</button>
+        <button class="chip" data-chip="curso" type="button" title="Ver solo en curso">En curso</button>
+        <button class="chip" data-chip="comp" type="button" title="Ver solo cumplidas">Cumplidas</button>
+      </div>
+
+      <!-- Contadores + estado -->
+      <div style="display:flex; gap:12px; align-items:center; justify-content:center; width:100%;">
+        <div id="badgePend" class="status" aria-live="polite"></div>
+        <div id="badgeCurso" class="status" aria-live="polite"></div>
+        <div id="badgeComp" class="status" aria-live="polite"></div>
+        <div id="status" class="status" aria-live="polite">Cargando…</div>
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrap" role="region" aria-labelledby="tabla-title">
+      <h2 id="tabla-title" class="visually-hidden">Listado de tareas</h2>
+      <table id="tbl" aria-describedby="status">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Modal Bitácora -->
+  <div id="modalLog" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close="1" aria-hidden="true"></div>
+
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalLogTitle">
+      <header class="modal__header">
+        <h3 id="modalLogTitle">Bitácora de la tarea</h3>
+        <button class="btn modal__close" type="button" aria-label="Cerrar" data-close="1">✕</button>
+      </header>
+
+      <div class="modal__content">
+        <!-- Metadatos de la tarea -->
+        <div class="modal__meta">
+          <div><strong>ID:</strong> <span id="logTaskIdTxt">—</span></div>
+          <div><strong>Tarea:</strong> <span id="logTaskName">—</span></div>
+
+          <!-- Mantengo este span oculto para no romper el JS (no se muestra visualmente) -->
+          <div style="display:none"><strong>Responsable:</strong> <span id="logAssignee">—</span></div>
+        </div>
+
+        <!-- Registros existentes -->
+        <h4 style="margin:16px 0 8px">Registros existentes</h4>
+        <div class="table-wrap" style="max-height:260px; overflow:auto; border:1px solid var(--border); border-radius:12px;">
+          <table id="tblLogs">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Formulario: nuevo registro -->
+        <h4 style="margin:16px 0 8px">Agregar registro</h4>
+        <form id="logForm" class="form-grid" aria-describedby="logStatus">
+          <input type="hidden" id="logTaskId" />
+
+          <!-- Responsable oculto para no romper la lógica del script (se quita el label visible) -->
+          <input type="hidden" id="logPersona" value="Santiago Gutiérrez" />
+
+          <label>
+            <span>Inicio</span>
+            <input type="datetime-local" id="logInicio" />
+          </label>
+
+          <label>
+            <span>Fin</span>
+            <input type="datetime-local" id="logFin" />
+          </label>
+
+          <!-- (Se quitan los botones de “Ahora” y “Hoy 18:00”) -->
+
+          <!-- Campos guía -->
+          <label class="full">
+            <span>¿Qué se avanzó?</span>
+            <textarea id="logAvanzo" rows="3" placeholder="Ej.: Se terminó el bosquejo de la guía / se ajustó el contenido de la unidad 1…"></textarea>
+          </label>
+
+          <label class="full">
+            <span>¿Qué falta?</span>
+            <textarea id="logFalta" rows="3" placeholder="Ej.: Revisar ejercicios, aprobar con coordinación, preparar material de apoyo…"></textarea>
+          </label>
+
+          <label class="full">
+            <span>¿Qué se debe mejorar?</span>
+            <textarea id="logMejorar" rows="3" placeholder="Ej.: Mejorar claridad de instrucciones, definir rúbricas, simplificar ejemplos…"></textarea>
+          </label>
+
+          <label>
+            <span>Estado al cerrar</span>
+            <select id="logEstado">
+              <option value="">—</option>
+              <option>En curso</option>
+              <option>Cumplido</option>
+            </select>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn">Guardar registro</button>
+            <button type="button" class="btn" data-close="1">Cerrar</button>
+            <div id="logStatus" class="status" style="margin-left:auto"></div>
+          </div>
+        </form>
+
+        <!-- Nota de uso -->
+        <p class="status" style="margin-top:8px; text-align:center;">
+          Consejo: registra avances breves y concretos. Si no hay cambios, añade “sin avances” para mantener el historial al día.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <p style="max-width:1100px;margin:16px auto;color:#c21d4e; text-align:center;">
+      Activa JavaScript para ver la tabla de tareas y la bitácora.
+    </p>
+  </noscript>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
